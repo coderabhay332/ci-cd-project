@@ -1,0 +1,37 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Checkout') {
+            steps {
+                // Checkout source code from Git repository
+                git 'https://github.com/coderabhay332/ci-cd-project.git'
+            }
+        }
+
+        stage('Build') {
+            steps {
+                // Build your artifact (replace with your build commands)
+                
+                sh 'mvn clean' // Example Maven build
+               
+                // Or use any other build tool or commands
+            }
+        }
+        
+        stage('Deploy to S3') {
+            steps {
+                // Install AWS CLI (if not already installed)
+              
+                // Set AWS credentials (replace with your own)
+                sh 'aws configure set aws_access_key_id YOUR_ACCESS_KEY'
+                sh 'aws configure set aws_secret_access_key YOUR_SECRET_KEY'
+                
+
+                // Copy artifact to S3 bucket
+               sh 'aws s3 cp /home/ubuntu/ci-cd-project/index.html s3://ci-cd-deploy-mvn/ --region us-east-1'
+
+            }
+        }
+    }
+} 
